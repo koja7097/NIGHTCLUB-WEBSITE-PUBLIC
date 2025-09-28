@@ -1,3 +1,4 @@
+import React from "react"
 import { Navigation } from "@/components/navigation"
 import { ContactForm } from "@/components/contact-form"
 import { Footer } from "@/components/footer"

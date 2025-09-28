@@ -1,3 +1,4 @@
+import React from "react"
 import { Navigation } from "@/components/navigation"
 import { EventsCalendar } from "@/components/events-calendar"
 import { DJLineup } from "@/components/dj-lineup"

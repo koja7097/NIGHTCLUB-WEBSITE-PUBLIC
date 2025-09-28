@@ -1,10 +1,12 @@
 "use client"
 
+import React from "react"
 import { useState } from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Menu, X, Search } from "lucide-react"
+
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
@@ -26,39 +28,52 @@ export function Navigation() {
           <div className="hidden lg:flex items-center space-x-8">
             <Link
               href="/"
-              className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide"
+              className=" text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide
+               border-b-2 border-transparent hover:border-pink-300 transition duration-300"
             >
               HOME
             </Link>
             <Link
               href="/music"
-              className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide"
+              className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide
+                  border-b-2 border-transparent hover:border-pink-300 transition duration-300"
             >
               MUSIC
             </Link>
             <Link
               href="/events"
-              className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide"
+              className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide
+                  border-b-2 border-transparent hover:border-pink-300 transition duration-300"
             >
               EVENTS
             </Link>
             <Link
               href="/bar"
-              className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide"
+              className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide
+                  border-b-2 border-transparent hover:border-pink-300 transition duration-300"
             >
               BAR
             </Link>
             <Link
               href="/night-crew"
-              className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide"
+              className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide
+                  border-b-2 border-transparent hover:border-pink-300 transition duration-300"
             >
               NIGHT CREW
             </Link>
-            <Link
+            <Link 
               href="/gallery"
-              className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide"
+              className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide
+                  border-b-2 border-transparent hover:border-pink-300 transition duration-300"
             >
               GALLERY
+            </Link>
+                <Link 
+              href="/contact"
+              className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide
+                  border-b-2 border-transparent hover:border-pink-300 transition duration-300"
+            >
+              CONTACT 
             </Link>
           </div>
 
