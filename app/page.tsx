@@ -1,3 +1,4 @@
+import React from "react"
 import { Navigation } from "@/components/navigation"
 import { MobileOptimizedHero } from "@/components/mobile-optimized-hero"
 import { FeaturedClubs } from "@/components/featured-clubs"

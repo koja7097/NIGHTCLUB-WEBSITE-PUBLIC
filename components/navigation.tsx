@@ -1,7 +1,7 @@
 "use client"
 
 import React from "react"
-import { useState } from "react"
+import { useState,} from "react"
 import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
@@ -14,6 +14,9 @@ export function Navigation() {
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
   const toggleSearch = () => setIsSearchOpen(!isSearchOpen)
+
+
+ 
 
   return (
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
@@ -68,6 +71,15 @@ export function Navigation() {
             >
               GALLERY
             </Link>
+
+               <Link
+                href="/dashboard"
+                className="block px-3 py-3 text-foreground hover:bg-muted transition-colors font-medium uppercase text-sm tracking-wide"
+                onClick={toggleMenu}
+              >
+                Dashboard
+              </Link>
+
                 <Link 
               href="/contact"
               className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide
@@ -155,6 +167,13 @@ export function Navigation() {
                 onClick={toggleMenu}
               >
                 GALLERY
+              </Link>
+                <Link
+                href="/dashboard"
+                className="block px-3 py-3 text-foreground hover:bg-muted transition-colors font-medium uppercase text-sm tracking-wide"
+                onClick={toggleMenu}
+              >
+                Dashboard
               </Link>
             </div>
           </div>
