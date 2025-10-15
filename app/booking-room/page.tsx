@@ -1,7 +1,7 @@
 "use client";
 import React from "react";
 import { useState } from "react";
-import { Calendar, Clock, User, Mail, MessageSquare, CheckCircle } from "lucide-react";
+import { Calendar, Clock, User, Mail, MessageSquare, IdCard, CheckCircle } from "lucide-react";
 
 
 const STORAGE_KEY = "nightcrew_bookings";
@@ -9,6 +9,7 @@ export default function BookingRoomPage() {
   const [formData, setFormData] = useState({
     guestName: "",
     email: "",
+    eventId: "",
     date: "",
     time: "",
     guest: "",
@@ -27,8 +28,8 @@ export default function BookingRoomPage() {
     e.preventDefault(); 
     setLoading(true);
 
-    const stored = localStorage.getItem(STORAGE_KEY);
-   const existing = stored ? JSON.parse(stored) : [];
+  /*   const stored = localStorage.getItem(STORAGE_KEY);
+   const existing = stored ? JSON.parse(stored) : []; */
 
     const newBooking = {
      id: crypto.randomUUID(),
@@ -37,21 +38,26 @@ export default function BookingRoomPage() {
      date: formData.date,
      time: formData.time,
      guest: formData.guest,
+     notes: formData.notes,
+     eventId: formData.eventId,
      status: "pending",  
       };
 
     // Get existing bookings from LocalStorage
- 
+  try {
+    const existing = JSON.parse(localStorage.getItem(STORAGE_KEY) || "[]")
     const updated = [...existing, newBooking];
     localStorage.setItem(STORAGE_KEY, JSON.stringify(updated));
-
-    console.log("new Booking saved", newBooking);
-    console.log("updated Booking", updated)
-
+    console.log("New booking Saved", newBooking);
+     
+    window.dispatchEvent(new Event("booking_updated"));
+  } catch (err) {
+    console.error("error Saving Bookings", err)
+  }
     setTimeout(() => {
       setSubmitted(true);
       setLoading(false);
-      setFormData({ guestName: "", email: "",  date: "", time: "", guest: "", notes: "" });
+      setFormData({ guestName: "", email: "", eventId: "",  date: "", time: "", guest: "",  notes: "" });
       setTimeout(() => setSubmitted(false), 4000);
     }, 1000);
   };
@@ -92,6 +98,19 @@ export default function BookingRoomPage() {
                 name="email"
                 placeholder="Email Address"
                 value={formData.email}
+                onChange={handleChange}
+                required
+                className="w-full bg-gray-800 text-white pl-10 pr-3 py-3 rounded-lg focus:ring-2 focus:ring-pink-500 outline-none transition"
+              />
+            </div>
+
+               <div className="relative">
+              <IdCard className="absolute top-3 left-3 text-gray-500 w-5 h-5" />
+              <input
+                type="text"
+                name="eventId"
+                placeholder="Event Name"
+                value={formData.eventId}
                 onChange={handleChange}
                 required
                 className="w-full bg-gray-800 text-white pl-10 pr-3 py-3 rounded-lg focus:ring-2 focus:ring-pink-500 outline-none transition"

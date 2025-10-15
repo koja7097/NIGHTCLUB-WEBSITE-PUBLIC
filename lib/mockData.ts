@@ -18,6 +18,9 @@ export type EventItem = {
     poster?: MediaItem | null;
     gallery?: MediaItem[];
     capacity?: number;
+    image?: string;
+    category?: string;
+    featured?: boolean;
 }
 
 export type FeedPost = {
@@ -33,7 +36,7 @@ export type Booking = {
     time?: string;
     guest?:string
     notes?:string;
-    eventId: string;
+    eventId?: string;
     guestName: string;
     email?: string;
     status: 'pending' | 'accepted' | 'rejected' | 'check in';
@@ -49,6 +52,13 @@ export type Booking = {
         fee: "$20",
         location: 'C club',
         media: ["https://picsum.photos/200/300?random-1"],
+        poster: {
+            id: crypto.randomUUID(),
+            type: "image",
+            url: "https://picsum.photos/200/300?random=1",
+            alt: "Halloween Bash Poster",
+            createdAt: new Date().toISOString(),
+        },
     },
      {
         id: crypto.randomUUID(),
@@ -58,7 +68,14 @@ export type Booking = {
         description: "Spomky Vibes & Fun Customes",
         fee: "$30",
         location: 'Ecksee Club',
-        media: ["https://picsum.photos/200/300?random-2"],
+        media: ["https://picsum.photos/200/300?random=2"],
+           poster: {
+            id: crypto.randomUUID(),
+            type: "image",
+            url: "https://picsum.photos/200/300?random=2",
+            alt: "Halloween Bash Poster",
+            createdAt: new Date().toISOString(),
+        },
     },
  ]
 

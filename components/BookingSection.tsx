@@ -12,29 +12,41 @@ export default function BookingSection() {
 
   // Load from LocalStorage on mount
   useEffect(() => {
+    const loadBookings = () => {
+        try {
     const stored = localStorage.getItem(STORAGE_KEY);
-    if (!stored || stored === "[]") {
-        console.log("No Bookings Found")
-        setBookings(mockBooking);
-        localStorage.setItem(STORAGE_KEY, JSON.stringify(mockBooking));
+    if (stored && stored !== "[]") {
+        const parsed = JSON.parse(stored)
+        console.log("loaded Bookings from Localstorage")
+        setBookings(parsed);
      
      }else {
-        try {
-        const parsed = JSON.parse(stored);
-        console.log("loaded bookings from localstorage", parsed)
-        setBookings(parsed);
-
-     } catch (err) {
+        console.log("No existing booking found. loading mockdata");
+        setBookings(mockBooking);
+        if (!stored) {
+        localStorage.setItem(STORAGE_KEY, JSON.stringify(mockBooking));
+     }
+     }
+    } catch (err) {
       console.error("Error  parsing stored bookings from LocalStorage", err);
       setBookings(mockBooking)
      }
-    }
+};
+
+loadBookings();
+
+window.addEventListener("booking_updated", loadBookings);
+
+window.addEventListener("storage", loadBookings);
+
+return () =>{
+     window.removeEventListener("booking_updated", loadBookings);
+      window.removeEventListener("storage", loadBookings);
+};
   }, []);
 
   // Save to LocalStorage whenever bookings change
-  useEffect(() => {
-    localStorage.setItem(STORAGE_KEY, JSON.stringify(bookings));
-  }, [bookings]);
+
 
   const handleDelete = (id: string) => {
     const updated = bookings.filter((b) => b.id !== id);
@@ -57,13 +69,13 @@ export default function BookingSection() {
       XLSX.utils.book_append_sheet(wb, ws, "GuestList");
       const excelBuffer = XLSX.write(wb, { bookType: "xlsx", type: "array" });
       const blob = new Blob([excelBuffer], { type: "application/octet-stream" });
-      saveAs(blob, "guest-list.xlsx");
+      saveAs(blob, "nightcrew-booking.xlsx");
     } else {
       const doc = new jsPDF();
       doc.text("Guest List", 10, 10);
       bookings.forEach((b, i) => {
         doc.text(
-          `${i + 1}. ${b.guestName}(${b.email}) - ${b.eventId} - ${b.date} ${b.time} - ${b.status}`,
+          `${i + 1}. ${b.guestName}(${b.email}) - ${b.eventId} - ${b.date} ${b.time} ${b.notes} - ${b.status}`,
           10,
           20 + i * 10
         );
@@ -106,6 +118,7 @@ export default function BookingSection() {
                 <th className="border p-2">Date</th>
                 <th className="border p-2">Time</th>
                 <th className="border p-2">Guests</th>
+                 <th className="border p-2">Notes</th>
                 <th className="border p-2">Status</th>
                 <th className="border p-2">Action</th>
               </tr>
@@ -120,6 +133,7 @@ export default function BookingSection() {
                     <td className="border p-2">{b.date}</td>
                     <td className="border p-2">{b.time}</td>
                     <td className="border p-2">{b.guest}</td>
+                    <td className="border p-2">{b.notes}</td>
                     <td className="border p-2">{b.status}</td>
                     <td className="border p-2">
                       <button
