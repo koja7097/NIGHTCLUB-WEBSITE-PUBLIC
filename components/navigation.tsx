@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { Menu, X, Search, LogIn} from "lucide-react"
 import { useAuth } from "@/hooks/useAuth"
 import { useRouter, usePathname } from "next/navigation"
+import {useAut} from "./AuthProvider"
 
 
 export function Navigation() {
@@ -16,13 +17,19 @@ export function Navigation() {
   const {isAuthenticated, logout} = useAuth();
   const router =useRouter();
   const pathname = usePathname();
+  const {signOut, user} = useAut();
+
+  const handleSignOut = () => {
+    signOut();
+    router.push("/signup")
+  };
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
   const toggleSearch = () => setIsSearchOpen(!isSearchOpen)
 
 const handleLogout = () => {
   logout();
-  router.push("/login")
+  router.push("/admin-log")
 }
  const isDashboardPage = pathname?.startsWith("/dashboard");
 
@@ -107,6 +114,31 @@ const handleLogout = () => {
             )}
           </div>
 
+          <div className="flex items-center gap-3">
+            {user ? (
+              <>
+            <span className="text-sm text-bold text-gray-400">Hi, {user?.firstName}</span>
+            <button
+            onClick={handleSignOut}
+            className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm">
+              SignOut
+            </button>
+            </>
+            ) : (
+              <>
+              <Link
+              href="/signin"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded text-sm transition-all"
+              >Sign In</Link>
+
+                 <Link
+              href="/signup"
+              className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-1.5 rounded text-sm transition-all"
+              >Sign Up</Link>
+              </>
+            )}
+          </div>
+
           <div className="hidden lg:flex items-center space-x-4">
             <div className="relative">
               {isSearchOpen ? (
@@ -139,10 +171,10 @@ const handleLogout = () => {
             >Logout</Button>
           ) : (
           
-            <Link href="/login">
+            <Link href="/admin-log">
             <Button variant="ghost" size="sm" className="hover:bg-muted flex items-center gap-2">
               <LogIn className="h-5 w-5"/>
-              <span className="hidden md:inline">Login</span>
+              <span className="hidden md:inline">Admin Log</span>
             </Button>
             </Link>
           )}
@@ -215,7 +247,7 @@ const handleLogout = () => {
                 GALLERY
               </Link>
                 <Link
-                href="/login"
+                href="/admin-log"
                 className="block px-3 py-3 text-foreground hover:bg-muted transition-colors font-medium uppercase text-sm tracking-wide"
                 onClick={toggleMenu}
               >login</Link>
