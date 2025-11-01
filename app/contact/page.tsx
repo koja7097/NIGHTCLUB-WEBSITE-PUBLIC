@@ -3,6 +3,7 @@ import { Navigation } from "@/components/navigation"
 import { ContactForm } from "@/components/contact-form"
 import { Footer } from "@/components/footer"
 import { ScrollToTop } from "@/components/scroll-to-top"
+import ProtectedRoute from "@/components/ProtectedRoutes"
 
 export const metadata = {
   title: "Contact Us - TheNightCrew",
@@ -11,7 +12,9 @@ export const metadata = {
 }
 
 export default function ContactPage() {
+
   return (
+    <ProtectedRoute>
     <main className="min-h-screen">
       <Navigation />
 
@@ -38,5 +41,6 @@ export default function ContactPage() {
       <Footer />
       <ScrollToTop />
     </main>
+    </ProtectedRoute>
   )
 }

@@ -6,17 +6,32 @@ import Link from "next/link"
 import { Button } from "@/components/ui/button"
 import { Input } from "@/components/ui/input"
 import { Menu, X, Search, LogIn} from "lucide-react"
+import { useAuth } from "@/hooks/useAuth"
+import { useRouter, usePathname } from "next/navigation"
+import {useAut} from "./AuthProvider"
 
 
 export function Navigation() {
   const [isMenuOpen, setIsMenuOpen] = useState(false)
   const [isSearchOpen, setIsSearchOpen] = useState(false)
+  const {isAuthenticated, logout} = useAuth();
+  const router =useRouter();
+  const pathname = usePathname();
+  const {signOut, user} = useAut();
+
+  const handleSignOut = () => {
+    signOut();
+    router.push("/signup")
+  };
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen)
   const toggleSearch = () => setIsSearchOpen(!isSearchOpen)
 
-
- 
+const handleLogout = () => {
+  logout();
+  router.push("/admin-log")
+}
+ const isDashboardPage = pathname?.startsWith("/dashboard");
 
   return (
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
@@ -57,6 +72,13 @@ export function Navigation() {
             >
               BAR
             </Link>
+             <Link
+              href="/club-section"
+              className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide
+                  border-b-2 border-transparent hover:border-pink-300 transition duration-300"
+            >
+            Club Section
+            </Link>
             <Link
               href="/night-crew"
               className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide
@@ -72,14 +94,7 @@ export function Navigation() {
               GALLERY
             </Link>
 
-               <Link
-                href="/dashboard"
-                className="block px-3 py-3 text-foreground hover:bg-muted transition-colors font-medium uppercase text-sm tracking-wide"
-                onClick={toggleMenu}
-              >
-                Dashboard
-              </Link>
-
+          
                 <Link 
               href="/contact"
               className="text-foreground hover:text-muted-foreground transition-colors duration-300 font-medium uppercase text-sm tracking-wide
@@ -87,6 +102,41 @@ export function Navigation() {
             >
               CONTACT 
             </Link>
+
+            {/* Only shows dasboard if Logged in */}
+            {isAuthenticated && !isDashboardPage &&(
+                 <Link
+                href="/dashboard"
+                className="block px-3 py-3 text-foreground hover:bg-muted transition-colors font-medium uppercase text-sm tracking-wide"
+              >
+                Dashboard
+              </Link>
+            )}
+          </div>
+
+          <div className="flex items-center gap-3">
+            {user ? (
+              <>
+            <span className="text-sm text-bold text-gray-400">Hi, {user?.firstName}</span>
+            <button
+            onClick={handleSignOut}
+            className="bg-red-600 hover:bg-red-700 px-3 py-1 rounded text-sm">
+              SignOut
+            </button>
+            </>
+            ) : (
+              <>
+              <Link
+              href="/signin"
+              className="bg-blue-600 hover:bg-blue-700 text-white px-4 py-1.5 rounded text-sm transition-all"
+              >Sign In</Link>
+
+                 <Link
+              href="/signup"
+              className="bg-gray-600 hover:bg-gray-700 text-white px-4 py-1.5 rounded text-sm transition-all"
+              >Sign Up</Link>
+              </>
+            )}
           </div>
 
           <div className="hidden lg:flex items-center space-x-4">
@@ -109,14 +159,27 @@ export function Navigation() {
                 </Button>
               )}
             </div>
-
-            {/* Login Icon */}
-            <Link href="/login">
+          {!isDashboardPage && (
+            <div>
+          {/* if logged in show logout */}
+          {isAuthenticated ? (
+            <Button
+            variant="ghost"
+            size="sm"
+            onClick={handleLogout}
+            className="hover:bg-muted text-red-400"
+            >Logout</Button>
+          ) : (
+          
+            <Link href="/admin-log">
             <Button variant="ghost" size="sm" className="hover:bg-muted flex items-center gap-2">
               <LogIn className="h-5 w-5"/>
-              <span className="hidden md:inline">Login</span>
+              <span className="hidden md:inline">Admin Log</span>
             </Button>
             </Link>
+          )}
+         </div>
+          )}
           </div>
 
           {/* Mobile Menu Button */}
@@ -163,6 +226,13 @@ export function Navigation() {
                 BAR
               </Link>
               <Link
+                href="/club-section"
+                className="block px-3 py-3 text-foreground hover:bg-muted transition-colors font-medium uppercase text-sm tracking-wide"
+                onClick={toggleMenu}
+              >
+              Club Section
+              </Link>
+              <Link
                 href="/night-crew"
                 className="block px-3 py-3 text-foreground hover:bg-muted transition-colors font-medium uppercase text-sm tracking-wide"
                 onClick={toggleMenu}
@@ -177,14 +247,7 @@ export function Navigation() {
                 GALLERY
               </Link>
                 <Link
-                href="/dashboard"
-                className="block px-3 py-3 text-foreground hover:bg-muted transition-colors font-medium uppercase text-sm tracking-wide"
-                onClick={toggleMenu}
-              >
-                Dashboard
-              </Link>
-                <Link
-                href="/login"
+                href="/admin-log"
                 className="block px-3 py-3 text-foreground hover:bg-muted transition-colors font-medium uppercase text-sm tracking-wide"
                 onClick={toggleMenu}
               >login</Link>

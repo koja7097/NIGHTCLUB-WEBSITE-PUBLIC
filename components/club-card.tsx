@@ -1,8 +1,10 @@
+import React from "react"
 import Image from "next/image"
 import { Button } from "@/components/ui/button"
 import { Card, CardContent, CardFooter, CardHeader } from "@/components/ui/card"
 import { Badge } from "@/components/ui/badge"
 import { MapPin, Star, Clock, Users } from "lucide-react"
+import Link from "next/link"
 
 interface ClubCardProps {
   id: string
@@ -79,7 +81,9 @@ export function ClubCard({
       </CardContent>
 
       <CardFooter className="p-4 pt-0">
+        <Link href="/booking-room">
         <Button className="w-full bg-primary hover:bg-secondary text-primary-foreground">Book Now</Button>
+        </Link>
       </CardFooter>
     </Card>
   )

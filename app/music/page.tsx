@@ -1,7 +1,9 @@
 import React from "react"
 import { Navigation } from "@/components/navigation"
+import ProtectedRoute from "@/components/ProtectedRoutes"
 export default function MusicPage() {
     return (
+        <ProtectedRoute>
          <main>
             <Navigation/>
             <div>
@@ -9,5 +11,6 @@ export default function MusicPage() {
                 <p className="text-muted text-center mt-3">Bar page now shows</p>
             </div>
             </main>
+            </ProtectedRoute>
     )
 }

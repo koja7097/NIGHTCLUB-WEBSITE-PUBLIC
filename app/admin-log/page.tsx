@@ -2,17 +2,30 @@
 
 import Link from "next/link";
 import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { useAuth } from "@/hooks/useAuth";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
 
 
 export default function LoginPage() {
+    const {login} = useAuth();
+    const router = useRouter();
+
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
+    const [error, setError] = useState("");
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
+
+        const result = login(email, password);
+        if(result.success) {
+            router.push("/dashboard");
+        } else {
+            setError(result.message || "invalid credentials");
+        }
        console.log("Login with", email, password)
     };
     return (
@@ -21,12 +34,12 @@ export default function LoginPage() {
         <div className="w-full max-w-md p-8 space-y-6 bg-gray-900 rounded-2xl shadow-xl border border-gray-700">
             {/* Top --- Title */}
         <div className="text-center">
-            <h2 className="text-2xl font-bold text-center">Sign in to your account</h2>
-            <p className="mt-2 text-sm text-gray-400">Dont have an account?{""} 
-                <Link href="/register" className="text-indigo-400 hover:underline">Create one</Link>
+            <h2 className="text-2xl font-bold text-center">Only Admin</h2>
+            <p className="mt-2 text-sm text-gray-400">Only Authorized Personel Are Allowed{""} 
+                <Link href="#" className="text-indigo-400 hover:underline"></Link>
             </p>
         </div>
-
+         {error && <p className="text-red-500 text-sm">{error}</p>}
 
           {/* Form */}
             <form onSubmit={handleSubmit} className="space-y-4">
@@ -36,6 +49,7 @@ export default function LoginPage() {
                 placeholder="Email"
                 value={email}
                 onChange={(e)=> setEmail(e.target.value)}
+                required
                 className="w-full  border border-gray-600 bg-gray-800 text-white rounded-lg focus:border-indigo-500 placeholder
                  focus:ring-indigo-500"
                 />

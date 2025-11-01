@@ -1,22 +1,38 @@
 "use client"
 import React from "react";
-import {useState} from "react"
+import {useEffect,useState} from "react"
+import { useRouter } from "next/navigation";
 import { Navigation } from "@/components/navigation";
 import { mockEvents, mockFeed, mockBooking , EventItem, Booking, FeedPost} from "@/lib/mockData";
 import SideSection from "@/components/SideSection";
 import EventSection from "@/components/EventSection";
 import FeedSection from "@/components/FeedSection";
 import BookingSection from "@/components/BookingSection";
+import StatsOverview from "@/components/StatsOverview";
+import BarMenuManager from "@/components/BarMenuManager";
+import GuestSection from "@/components/GuestSection";
+import DJManager from "@/components/DjManager";
+import MediaGalleryManager from "@/components/MediaGalleryManager";
 
 
 
 
 
 export default function DashboardPage() {
+const router = useRouter();
 
+//protected Route
+useEffect(()=> {
+    const auth = localStorage.getItem("nightcrew_auth");
+    if(!auth) {
+        router.replace("/login");
+    }else {
+        setIsUnlocked(true);
+    }
+}, [router]);
     // Authentication
     const [isUnlocked, setIsUnlocked] = useState(false)
-     const [loginInput, setLoginInput] = useState("")
+    /* const [loginInput, setLoginInput] = useState("")
       const [error, setError] = useState("")
 
       // settings: Allowed Pin or Name
@@ -30,7 +46,7 @@ export default function DashboardPage() {
         } else {
             setError("Access Denied. Wrong Pin or Name.")
         }
-      } 
+      }  */
 
 
     //States & Management
@@ -89,6 +105,9 @@ const addPost = () => {
         ...feed,
     ])
     setNewPost({id: "", caption: "", media: "", createdAt: ""})
+};
+if(!isUnlocked) {
+    return null // dont render until verified
 }
 
 // Booking Management
@@ -98,45 +117,44 @@ const addPost = () => {
         booking.map((b)=> (b.id === id ? {...b, status}: b))
     )
 } */
+  // Stats & chart data (example / derived from current mock data)
+  const statsData = [
+    { label: "Upcoming Events", value: events.length },
+    { label: "Bookings", value: booking.length },
+    { label: "Tickets Sold", value: 230 }, // example
+    { label: "Revenue", value: "$2,400" }, // example
+  ];
 
+  const chartData = [
+    { name: "Mon", value: 40 },
+    { name: "Tue", value: 30 },
+    { name: "Wed", value: 60 },
+    { name: "Thu", value: 80 },
+    { name: "Fri", value: 120 },
+    { name: "Sat", value: 150 },
+    { name: "Sun", value: 90 },
+  ];
 
     return (
         <>
          <Navigation/>
     <div className="flex min-h-screen">
 
-    {/* Login */}
-    {!isUnlocked && (
-    <div className="fixed inset-0 bg-black bg-opacity-60 flex item-center justify-center z-50">
-    <div className="bg-gray p-8 rounded-xl shadow-lg w-96 text-center">
-    <h2 className="text-xl font-semibold mb-4">Enter Pin or Name</h2>
-    <input type="text"
-    placeholder="Enter Pin or Name"
-    value={loginInput}
-    onChange={(e)=> setLoginInput(e.target.value)}
-    className="border w-full p-2 rounded mb-4"
-    />
-    {error && <p className="text-red-600 text-sm mb-2">{error}</p>}
-    <button
-    onClick={handleLogin}
-    className="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 w-full"
-    >Unlock</button>
-    </div>
-    </div>
-    )}
 
-
-    
       <aside className="flex flex-col fixed inset-y-0 left-0 bg-black w-18 md:w-44 transition-all duration-300">
       <SideSection activeTap={activeTap} setActiveTap={setActiveTap}/>
       </aside>
-          {isUnlocked && (
-          <main className="flex-1 p-6 space-y-10 overflow-y-auto ml-16 md:ml-64 w-full">
+
+          <main className="flex-1 flex-wrap  p-6 space-y-10 overflow-y-auto ml-16 md:ml-64 w-full">
          <div className="flex items-center justify-between p-3 shadow sticky top-0 z-30 md:hidden">
               <h1 className="text-2xl font-bold text-center">Club Owners Dashboard</h1>
          </div>
         
         
+           {activeTap === "overview" && (
+             <StatsOverview stats={statsData} chartData={chartData}/>
+            )}
+
            {activeTap === "events" && (
              <EventSection
             events={events} 
@@ -157,12 +175,27 @@ const addPost = () => {
            
      {activeTap === "booking" && (
           <BookingSection
-       booking={booking}
        />
      )}
 
+     {activeTap === "barMenu" && (
+        <BarMenuManager/>
+     )}
+    
+     {activeTap === "guestSection" && (
+        <GuestSection/>
+     )}
+
+     {activeTap === "dj" && (
+        <DJManager/>
+     )}
+    
+    
+     {activeTap === "media" && (
+        <MediaGalleryManager/>
+     )}
+
         </main>
-        )}
     </div>
     
     </>

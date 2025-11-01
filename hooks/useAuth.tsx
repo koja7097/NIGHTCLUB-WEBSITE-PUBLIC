@@ -1,33 +1,28 @@
 import {useEffect, useState} from "react";
-import {onAuthStateChanged, User} from "firebase/auth";
-import {auth, db} from "../lib/firebase";
-import {doc, getDoc} from "firebase/firestore";
 
-type UserProfile = {
-    name: string;
-    email: string;
-    role: string;
-};
-export default function useAuth() {
-    const [user, setUser] = useState<User | null>(null);
-    const [profile, setProfile] = useState<UserProfile | null>(null);
-    const [loading, setLoading] = useState(true);
+export function useAuth() {
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     useEffect(()=> {
-        const unsub = onAuthStateChanged(auth, async (u) => {
-            setUser(u);
-            if(!u) {
-                setProfile(null);
-                setLoading(false);
-                return;
-            }
+        const auth = localStorage.getItem("nightcrew_auth");
+        setIsAuthenticated(auth === "true");
+    }, [])
 
-            const docRef = doc(db, "users", u.uid);
-            const snap = await getDoc(docRef);
-            if(snap.exists()) setProfile(snap.data() as UserProfile);
-            setLoading(false);
-        });
-        return () => unsub();
-    }, []);
-    return {user, profile, loading}
+    const login = (email: string, password: string) => {
+       const adminEmail = "admin@nightcrew.com";
+       const adminPassword = "Admin123";
+
+       if(email === adminEmail && password === adminPassword) {
+        localStorage.setItem("nightcrew_auth", "true");
+        setIsAuthenticated(true);
+        return {success:true};
+       }
+       return {success: false, message: "Invalid Admin credentials"};
+    };
+
+    const logout = () => {
+        localStorage.removeItem("nightcrew_auth");
+        setIsAuthenticated(false)
+    };
+    return {isAuthenticated, login, logout};
 }

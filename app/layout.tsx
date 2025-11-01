@@ -4,6 +4,7 @@ import { Space_Grotesk, DM_Sans } from "next/font/google"
 import { Analytics } from "@vercel/analytics/next"
 import { ThemeProvider } from "@/components/theme-provider"
 import { Suspense } from "react"
+import { AuthProvider } from "@/components/AuthProvider"
 import "./globals.css"
 
 const spaceGrotesk = Space_Grotesk({
@@ -70,7 +71,7 @@ export default function RootLayout({
           }
         >
           <ThemeProvider attribute="class" defaultTheme="dark" enableSystem disableTransitionOnChange>
-            {children}
+            <AuthProvider>{children}</AuthProvider>
           </ThemeProvider>
         </Suspense>
         <Analytics />

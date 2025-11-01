@@ -18,6 +18,9 @@ export type EventItem = {
     poster?: MediaItem | null;
     gallery?: MediaItem[];
     capacity?: number;
+    image?: string;
+    category?: string;
+    featured?: boolean;
 }
 
 export type FeedPost = {
@@ -28,11 +31,15 @@ export type FeedPost = {
 }
 
 export type Booking = {
-    id?: string;
-    eventId: string;
+    id: string;
+    date?:string;
+    time?: string;
+    guest?:string
+    notes?:string;
+    eventId?: string;
     guestName: string;
     email?: string;
-    status: 'pending' | 'accepted' | 'rejected' | 'checked in';
+    status: 'pending' | 'accepted' | 'rejected' | 'check in';
 }
 
  export const mockEvents: EventItem[] = [
@@ -45,6 +52,13 @@ export type Booking = {
         fee: "$20",
         location: 'C club',
         media: ["https://picsum.photos/200/300?random-1"],
+        poster: {
+            id: crypto.randomUUID(),
+            type: "image",
+            url: "https://picsum.photos/200/300?random=1",
+            alt: "Halloween Bash Poster",
+            createdAt: new Date().toISOString(),
+        },
     },
      {
         id: crypto.randomUUID(),
@@ -54,7 +68,14 @@ export type Booking = {
         description: "Spomky Vibes & Fun Customes",
         fee: "$30",
         location: 'Ecksee Club',
-        media: ["https://picsum.photos/200/300?random-2"],
+        media: ["https://picsum.photos/200/300?random=2"],
+           poster: {
+            id: crypto.randomUUID(),
+            type: "image",
+            url: "https://picsum.photos/200/300?random=2",
+            alt: "Halloween Bash Poster",
+            createdAt: new Date().toISOString(),
+        },
     },
  ]
 
@@ -78,12 +99,20 @@ export type Booking = {
  id: crypto.randomUUID(),
  guestName: "Hadshi Raque",
  eventId: "Summer party",
- status: "pending",
+ email: "Hadhi@gmail.com",
+ time: "8:00",
+ guest: "3",
+ notes: "VIP Areas In Front",
+  status: "pending",
  },
  {
  id: crypto.randomUUID(),
  guestName: "Maurine Smith",
  eventId: "Halloween Bash",
+ email: "rine@gmail.com",
+ time: "4:30",
+ guest: "20",
+ notes: "Get Together",
  status: "accepted", 
  },
- ]
+ ] 

@@ -1,9 +1,11 @@
 import React from "react"
 import { Navigation } from "@/components/navigation"
 import { mockFeed } from "@/lib/mockData"
+import ProtectedRoute from "@/components/ProtectedRoutes"
 export default function GalleryPage() {
 
     return (
+        <ProtectedRoute>
         <main>
               <main>
                      <Navigation/>
@@ -29,5 +31,6 @@ export default function GalleryPage() {
                  </div>
                  </main>
         </main>
+        </ProtectedRoute>
     )
 }
