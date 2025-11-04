@@ -160,7 +160,7 @@ import { useState } from "react";
 import { db, storage, auth } from "@/lib/firebase";
 import { collection, addDoc } from "firebase/firestore";
 import { ref, uploadBytes, getDownloadURL } from "firebase/storage";
-import { BarItem, NightCrewMember, MusicTrack, MediaItem, EventItem } from "@/src/types/type";
+import { BarItem, NightCrewMember, MusicTrack, MediaItem, EventItem } from "@/src/types/type"; 
 
 interface Props {
     collectionName: string;
