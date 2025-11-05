@@ -35,13 +35,15 @@ export function Navigation() {
     <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur-md border-b border-border">
       <div className="container mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-14">
+          {/* Brand Logo */}
           <Link href="/" className="flex items-center space-x-2 group">
-            <div className="text-sm md:text-xl font-semibold text-foreground group-hover:opacity-80 transition-opacity duration-300 tracking-wider">
+            <div className="text-base md:text-lg font-medium text-foreground group-hover:opacity-80 transition-opacity duration-300 tracking-wider">
               THE NIGHT CREW
             </div>
           </Link>
 
-          <div className="hidden lg:flex items-center space-x-6">
+          {/* Main Links */}
+          <div className="hidden lg:flex items-center space-x-5">
             {[
               { href: "/", label: "HOME" },
               { href: "/music", label: "MUSIC" },
@@ -55,7 +57,7 @@ export function Navigation() {
               <Link
                 key={item.href}
                 href={item.href}
-                className="text-sm font-medium uppercase tracking-wide text-foreground hover:text-muted-foreground border-b-2 border-transparent hover:border-pink-300 transition duration-300"
+                className="text-xs font-medium uppercase tracking-wide text-foreground hover:text-muted-foreground border-b-2 border-transparent hover:border-pink-400 transition duration-300"
               >
                 {item.label}
               </Link>
@@ -64,22 +66,23 @@ export function Navigation() {
             {isAuthenticated && !isDashboardPage && (
               <Link
                 href="/dashboard"
-                className="text-sm font-small uppercase tracking-wide text-foreground hover:text-muted-foreground border-b-2 border-transparent hover:border-pink-300 transition duration-300"
+                className="text-xs font-medium uppercase tracking-wide text-foreground hover:text-muted-foreground border-b-2 border-transparent hover:border-pink-400 transition duration-300"
               >
                 Dashboard
               </Link>
             )}
           </div>
 
+          {/* Right Controls */}
           <div className="flex items-center gap-2">
             {user ? (
               <>
-                <span className="text-xs font-medium text-gray-400">
+                <span className="text-xs text-gray-400">
                   Hi, {user?.firstName}
                 </span>
                 <button
                   onClick={handleSignOut}
-                  className="bg-red-600 hover:bg-red-700 px-2 py-1 rounded text-xs text-white"
+                  className="bg-red-600 hover:bg-red-700 px-2 py-1 rounded text-xs text-white transition-all"
                 >
                   SignOut
                 </button>
@@ -102,6 +105,7 @@ export function Navigation() {
             )}
           </div>
 
+          {/* Search + Admin Buttons */}
           <div className="hidden lg:flex items-center space-x-3">
             <div className="relative">
               {isSearchOpen ? (
@@ -109,7 +113,7 @@ export function Navigation() {
                   <Input
                     type="search"
                     placeholder="Search..."
-                    className="w-40 bg-card border-border focus:border-foreground text-sm"
+                    className="w-36 bg-card border-border focus:border-foreground text-xs"
                     autoFocus
                   />
                   <Button
@@ -152,7 +156,6 @@ export function Navigation() {
                       className="hover:bg-muted flex items-center gap-1 text-xs"
                     >
                       <LogIn className="h-4 w-4" />
-                      <span className="hidden md:inline"></span>
                     </Button>
                   </Link>
                 )}
@@ -160,6 +163,7 @@ export function Navigation() {
             )}
           </div>
 
+          {/* Mobile Menu Toggle */}
           <div className="lg:hidden">
             <Button
               variant="ghost"
@@ -172,6 +176,7 @@ export function Navigation() {
           </div>
         </div>
 
+        {/* Mobile Menu */}
         {isMenuOpen && (
           <div className="lg:hidden animate-fade-in">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 bg-card border-t border-border">
@@ -193,7 +198,7 @@ export function Navigation() {
                 <Link
                   key={i}
                   href={`/${label.toLowerCase().replace(" ", "-")}`}
-                  className="block px-3 py-2 text-sm text-foreground hover:bg-muted transition-colors font-medium uppercase tracking-wide"
+                  className="block px-3 py-2 text-xs text-foreground hover:bg-muted transition-colors font-medium uppercase tracking-wide"
                   onClick={toggleMenu}
                 >
                   {label}
